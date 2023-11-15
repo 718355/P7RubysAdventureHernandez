@@ -7,7 +7,7 @@ public class RubyController : MonoBehaviour
     public float speed = 3.0f;
 
     public int maxHealth = 5;
-    public float timeInvincible = 2;
+    public float timeInvincible = 2f;
     public int health{get {return currentHealth; } }
     int currentHealth;
 
@@ -23,6 +23,7 @@ public class RubyController : MonoBehaviour
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
+        
         
 
     }
@@ -55,7 +56,7 @@ public class RubyController : MonoBehaviour
     {
         if(amount < 0)
         {
-            if(isInvincible)
+            if (isInvincible)
             {
                 return;
             }
