@@ -49506,6 +49506,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ruby
       objectReference: {fileID: 0}
+    - target: {fileID: 7776177619964831910, guid: b35b875aeaaaa7d4da4605d9aae0d938, type: 3}
+      propertyPath: speed
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -49695,11 +49699,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1578128081274590771, guid: 26f9e07a4f80e0f4bb030ce91581d907, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.529
+      value: -0.72
       objectReference: {fileID: 0}
     - target: {fileID: 1578128081274590771, guid: 26f9e07a4f80e0f4bb030ce91581d907, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.051
+      value: 6.31
       objectReference: {fileID: 0}
     - target: {fileID: 1578128081274590771, guid: 26f9e07a4f80e0f4bb030ce91581d907, type: 3}
       propertyPath: m_LocalPosition.z
