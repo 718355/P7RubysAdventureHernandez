@@ -65,6 +65,15 @@ public class RubyController : MonoBehaviour
             Launch();
         }
 
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            RaycastHit2D hit2D = Physics2D.Raycast(rigidbody2d.position + Vector2.up * 0.2f, lookDirection, 1.5f, LayerMask.GetMask("NPC"));
+            if(hit2D.collider != null)
+            {
+                Debug.Log("Raycast has hit the object " + hit2D.collider.gameObject);
+            }
+        }
+
     }
     void FixedUpdate()
     {
@@ -88,7 +97,7 @@ public class RubyController : MonoBehaviour
             inInvincibleTimer = timeInvincible;
         }
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
-        Debug.Log(currentHealth + "/" + maxHealth);
+        UiHealthBar.instance.SetValue(currentHealth/(float)maxHealth);
     }
 
     void Launch()
