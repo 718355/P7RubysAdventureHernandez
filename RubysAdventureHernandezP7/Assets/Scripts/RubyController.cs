@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class RubyController : MonoBehaviour
-{ 
+{
     public float speed = 3.0f;
 
     public int maxHealth = 5;
@@ -11,7 +11,7 @@ public class RubyController : MonoBehaviour
     public GameObject projectilePrefab;
 
     public float timeInvincible = 2.0f;
-    public int health{get {return currentHealth; } }
+    public int health { get { return currentHealth; } }
     int currentHealth;
 
     bool isInvincible;
@@ -24,14 +24,19 @@ public class RubyController : MonoBehaviour
     Animator animator;
     Vector2 lookDirection = new Vector2(1, 0);
 
+    AudioSource audioSource;
+    public AudioClip throwSound;
+    public AudioClip hitSound;
+
     // Start is called before the first frame update
     void Start()
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
         animator = GetComponent<Animator>();
-        
-        
+
+
+        audioSource = GetComponent<AudioSource>();
 
     }
 
@@ -43,7 +48,7 @@ public class RubyController : MonoBehaviour
 
         Vector2 move = new Vector2(horizontal, vertical);
 
-        if(!Mathf.Approximately(move.x, 0.0f) || !Mathf.Approximately(move.y, 0.0f))
+        if (!Mathf.Approximately(move.x, 0.0f) || !Mathf.Approximately(move.y, 0.0f))
         {
             lookDirection.Set(move.x, move.y);
             lookDirection.Normalize();
@@ -55,22 +60,26 @@ public class RubyController : MonoBehaviour
         if (isInvincible)
         {
             inInvincibleTimer -= Time.deltaTime;
-            if(inInvincibleTimer < 0 )
+            if (inInvincibleTimer < 0)
             {
                 isInvincible = false;
             }
         }
-        if(Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C))
         {
             Launch();
         }
 
         if (Input.GetKeyDown(KeyCode.X))
         {
-            RaycastHit2D hit2D = Physics2D.Raycast(rigidbody2d.position + Vector2.up * 0.2f, lookDirection, 1.5f, LayerMask.GetMask("NPC"));
-            if(hit2D.collider != null)
+            RaycastHit2D hit = Physics2D.Raycast(rigidbody2d.position + Vector2.up * 0.2f, lookDirection, 1.5f, LayerMask.GetMask("NPC"));
+            if (hit.collider != null)
             {
-                Debug.Log("Raycast has hit the object " + hit2D.collider.gameObject);
+                NonplayerCaracter character = hit.collider.GetComponent<NonplayerCaracter>();
+                if (character != null)
+                {
+                    character.DisplayDialog();
+                }
             }
         }
 
@@ -85,7 +94,7 @@ public class RubyController : MonoBehaviour
     }
     public void ChangeHealth(int amount)
     {
-        if(amount < 0)
+        if (amount < 0)
         {
             animator.SetTrigger("Hit");
 
@@ -95,9 +104,10 @@ public class RubyController : MonoBehaviour
             }
             isInvincible = true;
             inInvincibleTimer = timeInvincible;
+            PlaySound(hitSound);
         }
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
-        UiHealthBar.instance.SetValue(currentHealth/(float)maxHealth);
+        UiHealthBar.instance.SetValue(currentHealth / (float)maxHealth);
     }
 
     void Launch()
@@ -108,5 +118,11 @@ public class RubyController : MonoBehaviour
         projectile.Launch(lookDirection, 300);
 
         animator.SetTrigger("Launch");
+        PlaySound(throwSound);
+    }
+
+    public void PlaySound(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
     }
 }
